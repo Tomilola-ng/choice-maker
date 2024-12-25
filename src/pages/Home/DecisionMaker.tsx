@@ -1,9 +1,15 @@
-import { useState } from 'react';
-import { Plus, Trash2, HelpCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useState } from "react";
+import { Plus, Trash2, HelpCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface Option {
   text: string;
@@ -11,18 +17,18 @@ interface Option {
 }
 
 const DecisionMaker = () => {
-  const [question, setQuestion] = useState('');
+  const [question, setQuestion] = useState("");
   const [options, setOptions] = useState<Option[]>([
-    { text: '', percentage: 0 },
-    { text: '', percentage: 0 },
-    { text: '', percentage: 0 },
+    { text: "", percentage: 0 },
+    { text: "", percentage: 0 },
+    { text: "", percentage: 0 },
   ]);
-  const [result, setResult] = useState<string>('');
-  const [error, setError] = useState<string>('');
+  const [result, setResult] = useState<string>("");
+  const [error, setError] = useState<string>("");
   const [isThinking, setIsThinking] = useState(false);
 
   const addOption = () => {
-    setOptions([...options, { text: '', percentage: 0 }]);
+    setOptions([...options, { text: "", percentage: 0 }]);
   };
 
   const removeOption = (index: number) => {
@@ -32,11 +38,18 @@ const DecisionMaker = () => {
     }
   };
 
-  const updateOption = (index: number, field: keyof Option, value: string | number) => {
+  const updateOption = (
+    index: number,
+    field: keyof Option,
+    value: string | number
+  ) => {
     const newOptions = [...options];
     newOptions[index] = {
       ...newOptions[index],
-      [field]: field === 'percentage' ? Math.min(100, Math.max(0, Number(value))) : value,
+      [field]:
+        field === "percentage"
+          ? Math.min(100, Math.max(0, Number(value)))
+          : value,
     };
     setOptions(newOptions);
   };
@@ -44,27 +57,30 @@ const DecisionMaker = () => {
   const calculateChoice = async () => {
     // Validation
     if (!question.trim()) {
-      setError('Please enter a question');
+      setError("Please enter a question");
       return;
     }
 
-    if (options.some(opt => !opt.text.trim())) {
-      setError('Please fill in all option texts');
+    if (options.some((opt) => !opt.text.trim())) {
+      setError("Please fill in all option texts");
       return;
     }
 
-    const totalPercentage = options.reduce((sum, opt) => sum + opt.percentage, 0);
+    const totalPercentage = options.reduce(
+      (sum, opt) => sum + opt.percentage,
+      0
+    );
     if (totalPercentage !== 100) {
-      setError('Percentages must add up to 100%');
+      setError("Percentages must add up to 100%");
       return;
     }
 
-    setError('');
+    setError("");
     setIsThinking(true);
-    setResult('');
+    setResult("");
 
     // Simulate thinking process
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     // Weighted random selection
     const random = Math.random() * 100;
@@ -77,7 +93,7 @@ const DecisionMaker = () => {
         break;
       }
     }
-    
+
     setIsThinking(false);
   };
 
@@ -87,10 +103,29 @@ const DecisionMaker = () => {
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Decision Maker</CardTitle>
           <CardDescription className="text-gray-600">
-            Let me help you make a decision based on your preferences. Enter your options and assign
-            percentage weights to reflect how much you favor each choice.
+            Let me help you make a decision based on your preferences. Enter
+            your options and assign percentage weights to reflect how much you
+            favor each choice.
           </CardDescription>
         </CardHeader>
+
+        {error && (
+          <Alert variant="destructive" className="bg-red-50/50">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
+
+        {result && (
+          <Alert className="bg-green-50/50">
+            <AlertDescription className="text-center">
+              <div className="font-medium mb-1">
+                Based on your preferences, I suggest:
+              </div>
+              <div className="text-lg font-bold text-green-700">{result}</div>
+            </AlertDescription>
+          </Alert>
+        )}
+
         <CardContent className="space-y-6">
           <div className="space-y-2">
             <label className="text-sm font-medium">Your Question</label>
@@ -107,7 +142,9 @@ const DecisionMaker = () => {
               <label className="text-sm font-medium">Your Options</label>
               <div className="flex items-center space-x-1">
                 <HelpCircle className="h-4 w-4 text-gray-400" />
-                <span className="text-xs text-gray-500">Percentages must add up to 100%</span>
+                <span className="text-xs text-gray-500">
+                  Percentages must add up to 100%
+                </span>
               </div>
             </div>
 
@@ -116,7 +153,7 @@ const DecisionMaker = () => {
                 <Input
                   placeholder={`Option ${index + 1} (e.g., "Go to the beach")`}
                   value={option.text}
-                  onChange={(e) => updateOption(index, 'text', e.target.value)}
+                  onChange={(e) => updateOption(index, "text", e.target.value)}
                   className="flex-grow bg-white/50"
                 />
                 <Input
@@ -124,7 +161,9 @@ const DecisionMaker = () => {
                   min="0"
                   max="100"
                   value={option.percentage}
-                  onChange={(e) => updateOption(index, 'percentage', e.target.value)}
+                  onChange={(e) =>
+                    updateOption(index, "percentage", e.target.value)
+                  }
                   className="w-24 bg-white/50"
                   placeholder="%"
                 />
@@ -133,7 +172,9 @@ const DecisionMaker = () => {
                   size="icon"
                   onClick={() => removeOption(index)}
                   disabled={options.length <= 3}
-                  className={`${options.length <= 3 ? 'opacity-50' : 'opacity-100'}`}
+                  className={`${
+                    options.length <= 3 ? "opacity-50" : "opacity-100"
+                  }`}
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
@@ -142,12 +183,16 @@ const DecisionMaker = () => {
           </div>
 
           <div className="flex justify-between">
-            <Button onClick={addOption} variant="outline" className="bg-white/50">
+            <Button
+              onClick={addOption}
+              variant="outline"
+              className="bg-white/50"
+            >
               <Plus className="h-4 w-4 mr-2" />
               Add Another Option
             </Button>
-            <Button 
-              onClick={calculateChoice} 
+            <Button
+              onClick={calculateChoice}
               disabled={isThinking}
               className="bg-gradient-to-r from-purple-600 to-pink-600 text-white"
             >
@@ -157,28 +202,14 @@ const DecisionMaker = () => {
                   <span>Thinking...</span>
                 </div>
               ) : (
-                'Make Decision'
+                "Make Decision"
               )}
             </Button>
           </div>
 
-          {error && (
-            <Alert variant="destructive" className="bg-red-50/50">
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
-
-          {result && (
-            <Alert className="bg-green-50/50">
-              <AlertDescription className="text-center">
-                <div className="font-medium mb-1">Based on your preferences, I suggest:</div>
-                <div className="text-lg font-bold text-green-700">{result}</div>
-              </AlertDescription>
-            </Alert>
-          )}
-
           <div className="text-xs text-gray-500 text-center">
-            Pro tip: The higher the percentage, the more likely that option will be chosen.
+            Pro tip: The higher the percentage, the more likely that option will
+            be chosen.
           </div>
         </CardContent>
       </Card>
