@@ -79,10 +79,8 @@ const DecisionMaker = () => {
     setIsThinking(true);
     setResult("");
 
-    // Simulate thinking process
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    // Weighted random selection
     const random = Math.random() * 100;
     let accumulatedPercentage = 0;
 
@@ -98,11 +96,13 @@ const DecisionMaker = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 p-8 flex items-center justify-center">
+    <div className="min-h-screen w-full bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 p-2 sm:p-4 md:p-8 flex items-center justify-center">
       <Card className="w-full max-w-2xl backdrop-blur-lg bg-white/80 shadow-xl">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold">Decision Maker</CardTitle>
-          <CardDescription className="text-gray-600">
+        <CardHeader className="space-y-2 p-4 md:p-6">
+          <CardTitle className="text-xl md:text-2xl font-bold">
+            Decision Maker
+          </CardTitle>
+          <CardDescription className="text-sm md:text-base text-gray-600">
             Let me help you make a decision based on your preferences. Enter
             your options and assign percentage weights to reflect how much you
             favor each choice.
@@ -110,23 +110,25 @@ const DecisionMaker = () => {
         </CardHeader>
 
         {error && (
-          <Alert variant="destructive" className="bg-red-50/50">
-            <AlertDescription>{error}</AlertDescription>
+          <Alert variant="destructive" className="mx-4 mb-4 bg-red-50/50">
+            <AlertDescription className="text-sm">{error}</AlertDescription>
           </Alert>
         )}
 
         {result && (
-          <Alert className="bg-green-50/50">
+          <Alert className="mx-4 mb-4 bg-green-50/50">
             <AlertDescription className="text-center">
-              <div className="font-medium mb-1">
+              <div className="text-sm font-medium mb-1">
                 Based on your preferences, I suggest:
               </div>
-              <div className="text-lg font-bold text-green-700">{result}</div>
+              <div className="text-base md:text-lg font-bold text-green-700">
+                {result}
+              </div>
             </AlertDescription>
           </Alert>
         )}
 
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-4 md:space-y-6 p-4 md:p-6">
           <div className="space-y-2">
             <label className="text-sm font-medium">Your Question</label>
             <Input
@@ -137,8 +139,8 @@ const DecisionMaker = () => {
             />
           </div>
 
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
+          <div className="space-y-3 md:space-y-4">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
               <label className="text-sm font-medium">Your Options</label>
               <div className="flex items-center space-x-1">
                 <HelpCircle className="h-4 w-4 text-gray-400" />
@@ -149,44 +151,49 @@ const DecisionMaker = () => {
             </div>
 
             {options.map((option, index) => (
-              <div key={index} className="flex space-x-2">
+              <div
+                key={index}
+                className="flex flex-col sm:flex-row gap-2 sm:space-x-2"
+              >
                 <Input
-                  placeholder={`Option ${index + 1} (e.g., "Go to the beach")`}
+                  placeholder={`Option ${index + 1}`}
                   value={option.text}
                   onChange={(e) => updateOption(index, "text", e.target.value)}
                   className="flex-grow bg-white/50"
                 />
-                <Input
-                  type="number"
-                  min="0"
-                  max="100"
-                  value={option.percentage}
-                  onChange={(e) =>
-                    updateOption(index, "percentage", e.target.value)
-                  }
-                  className="w-24 bg-white/50"
-                  placeholder="%"
-                />
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => removeOption(index)}
-                  disabled={options.length <= 3}
-                  className={`${
-                    options.length <= 3 ? "opacity-50" : "opacity-100"
-                  }`}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+                <div className="flex gap-2">
+                  <Input
+                    type="number"
+                    min="0"
+                    max="100"
+                    value={option.percentage}
+                    onChange={(e) =>
+                      updateOption(index, "percentage", e.target.value)
+                    }
+                    className="w-24 bg-white/50"
+                    placeholder="%"
+                  />
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => removeOption(index)}
+                    disabled={options.length <= 3}
+                    className={`${
+                      options.length <= 3 ? "opacity-50" : "opacity-100"
+                    }`}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
             ))}
           </div>
 
-          <div className="flex justify-between">
+          <div className="flex flex-col sm:flex-row gap-3 sm:justify-between">
             <Button
               onClick={addOption}
               variant="outline"
-              className="bg-white/50"
+              className="bg-white/50 w-full sm:w-auto"
             >
               <Plus className="h-4 w-4 mr-2" />
               Add Another Option
@@ -194,10 +201,10 @@ const DecisionMaker = () => {
             <Button
               onClick={calculateChoice}
               disabled={isThinking}
-              className="bg-gradient-to-r from-purple-600 to-pink-600 text-white"
+              className="bg-gradient-to-r from-purple-600 to-pink-600 text-white w-full sm:w-auto"
             >
               {isThinking ? (
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center justify-center space-x-2">
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                   <span>Thinking...</span>
                 </div>
@@ -207,7 +214,7 @@ const DecisionMaker = () => {
             </Button>
           </div>
 
-          <div className="text-xs text-gray-500 text-center">
+          <div className="text-xs text-gray-500 text-center mt-4">
             Pro tip: The higher the percentage, the more likely that option will
             be chosen.
           </div>
