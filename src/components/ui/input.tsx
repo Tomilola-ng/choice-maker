@@ -12,12 +12,12 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
           "px-4 py-2 text-base text-gray-800",
           "placeholder:text-gray-400",
           // Focus states
-          "focus:border-purple-300/50 focus:bg-white/70",
+          "focus:border-green-300/50 focus:bg-white/70",
           "focus-visible:outline-none focus-visible:ring-2",
-          "focus-visible:ring-purple-400/30 focus-visible:ring-offset-2",
+          "focus-visible:ring-green-400/30 focus-visible:ring-offset-2",
           "focus-visible:ring-offset-transparent",
           // Hover states
-          "hover:border-purple-200/40 hover:bg-white/60",
+          "hover:border-green-200/40 hover:bg-white/60",
           // Disabled states
           "disabled:cursor-not-allowed disabled:opacity-50",
           // File input specifics
