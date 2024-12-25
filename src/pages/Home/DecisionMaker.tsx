@@ -96,7 +96,7 @@ const DecisionMaker = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-r from-green-400 to-teal-600 p-2 sm:p-4 md:p-8 flex items-center justify-center">
+    <div className="min-h-screen hide-scrollbar w-full bg-gradient-to-r from-green-400 to-teal-600 p-2 sm:p-4 md:p-8 flex items-center justify-center">
       <Card className="w-full max-w-2xl backdrop-blur-lg bg-white/80 shadow-xl">
         <CardHeader className="space-y-2 p-4 md:p-6">
           <CardTitle className="text-xl md:text-2xl font-bold">
@@ -214,9 +214,11 @@ const DecisionMaker = () => {
             </Button>
           </div>
 
-          <div className="text-xs text-gray-500 text-center mt-4">
-            Pro tip: The higher the percentage, the more likely that option will
-            be chosen.
+          <div className="text-xs text-gray-500 text-center text-pretty mt-4">
+            Made with ❤ by{" "}
+            <a href="https://tomilola-portfolio.netlify.app/">
+              Tomilola Oluwafemi
+            </a>
           </div>
         </CardContent>
       </Card>
