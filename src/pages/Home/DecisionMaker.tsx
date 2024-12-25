@@ -110,13 +110,13 @@ const DecisionMaker = () => {
         </CardHeader>
 
         {error && (
-          <Alert variant="destructive" className="mx-4 mb-4 bg-red-50/50">
+          <Alert variant="destructive" className="mb-4 bg-red-50/50">
             <AlertDescription className="text-sm">{error}</AlertDescription>
           </Alert>
         )}
 
         {result && (
-          <Alert className="mx-4 mb-4 bg-green-50/50">
+          <Alert className="mb-4 bg-green-50/50">
             <AlertDescription className="text-center">
               <div className="text-sm font-medium mb-1">
                 Based on your preferences, I suggest:
